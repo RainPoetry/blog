@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+    
+      
+    
+    
+      
+    
+  <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+  <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-flash.min.css" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=6.4.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/moon.ico?v=6.4.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/moon.ico?v=6.4.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/moon.ico?v=6.4.0">
+
+
+  <link rel="mask-icon" href="/blog/images/moon.ico?v=6.4.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Mist',
+    version: '6.4.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="将 Cron 表达式翻译为中文意思">
+<meta name="keywords" content="cron,解析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cron表达式解析">
+<meta property="og:url" content="https://rainpoetry.github.io/blog/2018/09/15/Cron 表达式解析/index.html">
+<meta property="og:site_name" content="cc 的个人博客">
+<meta property="og:description" content="将 Cron 表达式翻译为中文意思">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-15T07:10:45.039Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cron表达式解析">
+<meta name="twitter:description" content="将 Cron 表达式翻译为中文意思">
+
+
+
+
+
+
+  <link rel="canonical" href="https://rainpoetry.github.io/blog/2018/09/15/Cron 表达式解析/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Cron表达式解析 | cc 的个人博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cc 的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/blog/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/blog/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/blog/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/blog/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-java">
+    <a href="/blog/tags/java/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-leaf"></i> <br />java</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-kafka">
+    <a href="/blog/tags/kafka/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-paper-plane"></i> <br />kafka</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://rainpoetry.github.io/blog/blog/2018/09/15/Cron 表达式解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="RainPoetry">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/upload/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cc 的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Cron表达式解析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-15 11:39:04 / 修改时间：15:10:45" itemprop="dateCreated datePublished" datetime="2018-09-15T11:39:04+08:00">2018-09-15</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/cron/" itemprop="url" rel="index"><span itemprop="name">cron</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/cron/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/blog/2018/09/15/Cron 表达式解析/" class="leancloud_visitors" data-flag-title="Cron表达式解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+              <div class="post-description">将 Cron 表达式翻译为中文意思</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>应客户的要求，需要将 Cron 表达式解析为方便理解的中文意思，靠个人实现 cron 表达式的翻译解析工作，在短时间内不可能做得很完美，于是便在 GitHup 的开源项目上搜索,便有了这篇文章（<a href="https://github.com/bradymholt/cron-expression-descriptor" target="_blank" rel="noopener">GitHup 地址</a>）</p>
+<h2 id="该开源项目的简单介绍"><a href="#该开源项目的简单介绍" class="headerlink" title="该开源项目的简单介绍"></a>该开源项目的简单介绍</h2><div class="note success no-icon"><p><span id="inline-toc">1.</span> 支持 .Net、java、js、Python、Ruby 5种编程语言<br><span id="inline-toc">2.</span> 支持 18 种国家语言（包含 中文和英文）<br><span id="inline-toc">3.</span> 操作简便</p></div>
+<h2 id="JS-中-Cron-表达式解析的使用流程"><a href="#JS-中-Cron-表达式解析的使用流程" class="headerlink" title="JS 中 Cron 表达式解析的使用流程"></a>JS 中 Cron 表达式解析的使用流程</h2><h3 id="下载官网提供的2个-js-文件"><a href="#下载官网提供的2个-js-文件" class="headerlink" title="下载官网提供的2个 js 文件"></a>下载官网提供的2个 js 文件</h3><div class="note primary no-icon"><p>cronstrue-i18n.min.js : 用于语言的翻译，默认是英文<br>cronstrue.min.js : 表达解析的核心实现</p></div>
+<div class="note primary no-icon"><p>下载: <a href="https://github.com/bradymholt/cRonstrue/tree/master/dist" target="_blank" rel="noopener">官网地址</a> (本地下载)</p></div>
+<h3 id="在界面中引入下载好的-JS-文件"><a href="#在界面中引入下载好的-JS-文件" class="headerlink" title="在界面中引入下载好的 JS 文件"></a>在界面中引入下载好的 JS 文件</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"cronstrue.min.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"cronstrue-i18n.min.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用用例"><a href="#使用用例" class="headerlink" title="使用用例"></a>使用用例</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">cronstrue</span><span class="selector-class">.toString</span>("0 0 18 26 * ?");</span><br><span class="line">&gt; <span class="selector-tag">At</span> 06<span class="selector-pseudo">:00</span> <span class="selector-tag">PM</span>, <span class="selector-tag">on</span> <span class="selector-tag">day</span> 26 <span class="selector-tag">of</span> <span class="selector-tag">the</span> <span class="selector-tag">month</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">cronstrue</span><span class="selector-class">.toString</span>("0 0 18 26 * ?", &#123; <span class="attribute">locale</span>:<span class="string">"zh_CN"</span>&#125;);</span><br><span class="line">&gt; 在 06<span class="selector-pseudo">:00</span> <span class="selector-tag">PM</span>, 每月的 26 号</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">cronstrue</span><span class="selector-class">.toString</span>("0 0 18 26 * ?",&#123; <span class="attribute">locale</span>:<span class="string">"zh_CN"</span>,use24HourTimeFormat: true&#125;);</span><br><span class="line">&gt; 在 18<span class="selector-pseudo">:00</span>, 每月的 26 号</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">cronstrue</span><span class="selector-class">.toString</span>("* * 18 ? * 1<span class="selector-tag">-5</span>",&#123; <span class="attribute">locale</span>:<span class="string">"zh_CN"</span>&#125;)</span><br><span class="line">&gt; 每秒, 星期一 到 星期五</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">cronstrue</span><span class="selector-class">.toString</span>("* * * ? * 1<span class="selector-tag">-5</span>",&#123; <span class="attribute">locale</span>:<span class="string">"zh_CN"</span>,dayOfWeekStartIndexZero: false&#125;);</span><br><span class="line">&gt; 每秒, 星期日 到 星期四</span><br></pre></td></tr></table></figure>
+<h3 id="支持语言"><a href="#支持语言" class="headerlink" title="支持语言"></a>支持语言</h3><div class="note info"><p>en - English<br>cs - Czech<br>es - Spanish<br>da - Danish<br>de - German<br>fr - French<br>he - Hebrew<br>it - Italian<br>ja - Japanese<br>nb - Norwegian<br>nl - Dutch<br>pl - Polish<br>pt_BR - Portuguese (Brazil)<br>ro - Romanian<br>ru - Russian<br>sk - Slovakian<br>sl - Slovenian<br>sv - Swedish<br>tr - Turkish<br>uk - Ukrainian<br>zh_CN - Chinese (Simplified)</p></div>    
+<h2 id="java-中-Cron-表达式解析"><a href="#java-中-Cron-表达式解析" class="headerlink" title="java 中 Cron 表达式解析"></a>java 中 Cron 表达式解析</h2><h3 id="进入-java-版的项目地址"><a href="#进入-java-版的项目地址" class="headerlink" title="进入 java 版的项目地址"></a>进入 java 版的项目地址</h3><div class="note primary"><p><a href="https://github.com/grahamar/cron-parser" target="_blank" rel="noopener">GitHup 地址</a></p></div>  
+<h3 id="下载相关的依赖"><a href="#下载相关的依赖" class="headerlink" title="下载相关的依赖"></a>下载相关的依赖</h3><div class="note info no-icon"><p>cron-parser-core: 官方提供 jar 包和 pom 文件的方式<br>cron-parser-spring: 官方提供 jar 包和 pom 文件的方式<br>cron-parser：官方只提供 pom 文件的方式</p></div>
+<div class="note primary"><p>下载: <a href="https://search.maven.org/search?q=g:net.redhogs.cronparser" target="_blank" rel="noopener">官方地址</a></p></div>
+<h3 id="使用用例-1"><a href="#使用用例-1" class="headerlink" title="使用用例"></a>使用用例</h3><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">CronExpressionDescriptor.getDescription(<span class="string">"0 0 18 ? * 1-5"</span>)</span><br><span class="line">&gt; <span class="keyword">return</span> : At <span class="number">6</span>:<span class="number">00</span> PM, Monday through Friday</span><br><span class="line"></span><br><span class="line">CronExpressionDescriptor.getDescription(<span class="string">"0 0 18 ? * 1-5"</span>,Locale.getDefault())</span><br><span class="line">&gt; <span class="keyword">return</span> : 在 <span class="number">6</span>:<span class="number">00</span> 下午, 星期一到星期五</span><br><span class="line"></span><br><span class="line">CronExpressionDescriptor.getDescription(<span class="string">"0 0 18 ? * 1-5"</span>, <span class="keyword">Options</span>.twentyFourHour(), Locale.getDefault())</span><br><span class="line">&gt; <span class="keyword">return</span> : 在 下午<span class="number">6</span>:<span class="number">00</span>, 星期一到星期五</span><br><span class="line"></span><br><span class="line"><span class="keyword">Options</span> <span class="keyword">options</span> = <span class="keyword">new</span> <span class="keyword">Options</span>();</span><br><span class="line"><span class="keyword">options</span>.setZeroBasedDayOfWeek(<span class="keyword">false</span>);</span><br><span class="line">CronExpressionDescriptor.getDescription(<span class="string">"0 0 18 ? * 1-5"</span>, <span class="keyword">options</span>, Locale.getDefault())</span><br><span class="line">&gt; <span class="keyword">return</span>: 在 <span class="number">6</span>:<span class="number">00</span> 下午, 星期日到星期四</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/cron/" rel="tag"># cron</a>
+          
+            <a href="/blog/tags/解析/" rel="tag"># 解析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/09/15/rpc 框架的简单设计/" rel="prev" title="RPC 框架的设计">
+                RPC 框架的设计 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/blog/upload/head.jpg"
+                alt="RainPoetry" />
+            
+              <p class="site-author-name" itemprop="name">RainPoetry</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/blog/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/blog/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/blog/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/RainPoetry" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="1060465696@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/" target="_blank" title="Google"><i class="fa fa-fw fa-google"></i>Google</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#该开源项目的简单介绍"><span class="nav-number">2.</span> <span class="nav-text">该开源项目的简单介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JS-中-Cron-表达式解析的使用流程"><span class="nav-number">3.</span> <span class="nav-text">JS 中 Cron 表达式解析的使用流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载官网提供的2个-js-文件"><span class="nav-number">3.1.</span> <span class="nav-text">下载官网提供的2个 js 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在界面中引入下载好的-JS-文件"><span class="nav-number">3.2.</span> <span class="nav-text">在界面中引入下载好的 JS 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用用例"><span class="nav-number">3.3.</span> <span class="nav-text">使用用例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支持语言"><span class="nav-number">3.4.</span> <span class="nav-text">支持语言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java-中-Cron-表达式解析"><span class="nav-number">4.</span> <span class="nav-text">java 中 Cron 表达式解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进入-java-版的项目地址"><span class="nav-number">4.1.</span> <span class="nav-text">进入 java 版的项目地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载相关的依赖"><span class="nav-number">4.2.</span> <span class="nav-text">下载相关的依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用用例-1"><span class="nav-number">4.3.</span> <span class="nav-text">使用用例</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <center>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">RainPoetry</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+</center>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=6.4.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=6.4.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.4.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.4.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=6.4.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'RainPoetry',
+            repo: 'gitment-comments',
+            
+            lang: "zh-Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '0a92e76eca560bd8ae8c29a56b56fe9f5de36087',
+            
+                client_id: '944f011a42bbcd3ef468'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
+                .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function () {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "qbL9f9djMfTnp04Y8uM6Gop9-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "qbL9f9djMfTnp04Y8uM6Gop9-gzGzoHsz",
+                'X-LC-Key': "g83WulAHEtJidIfjwR82Brb5",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/blog/js/src/love.js"></script>
+<script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
